@@ -7,7 +7,7 @@ pipeline {
  } {
   stage('Compile Stage') {
    steps {
-    withMaven(maven: 'local_mvn') {
+    withMaven(maven: 'master-maven') {
      sh 'mvn clean compile'
     }
    }
@@ -15,7 +15,7 @@ pipeline {
 
   stage('Testing Stage') {
    steps {
-    withMaven(maven: 'local_mvn') {
+    withMaven(maven: 'master-maven') {
      sh 'mvn test'
     }
    }
@@ -23,7 +23,7 @@ pipeline {
 
   stage('install Stage') {
    steps {
-    withMaven(maven: 'local_mvn') {
+    withMaven(maven: 'master-maven') {
      sh 'mvn install'
     }
    }
@@ -31,8 +31,8 @@ pipeline {
 
   stage('deploy to tomcat') {
    steps {
-    sshagent(['app_pipeline']) {
-     sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@3.210.201.230:/var/lib/tomcat/webapps'
+    sshagent(['tomcat']) {
+     sh 'scp -o StrictHostKeyChecking=no */target/*.war ec2-user@3.224.135.85:/var/lib/tomcat/webapps'
     }
    }
   }
