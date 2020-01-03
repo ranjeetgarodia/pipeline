@@ -1,0 +1,41 @@
+pipeline {
+ agent any
+ stages {
+  stage('SCM Checkout') {
+   git 'https://github.com/ranjeetgarodia/pipeline'
+  }
+ } {
+  stage('Compile Stage') {
+   steps {
+    withMaven(maven: 'master-maven') {
+     sh 'mvn clean compile'
+    }
+   }
+  }
+
+  stage('Testing Stage') {
+   steps {
+    withMaven(maven: 'master-maven') {
+     sh 'mvn test'
+    }
+   }
+  }
+
+  stage('install Stage') {
+   steps {
+    withMaven(maven: 'master-maven') {
+     sh 'mvn install'
+    }
+   }
+  }
+
+  stage('deploy to tomcat') {
+   steps {
+    //sshagent(['tomcat-pipeline']) {
+    sshagent(credentials: ['tomcat_dev']) {
+      sh 'scp -o StrictHostKeyChecking=no */target/*.war root@10.0.1.58:/var/lib/tomcat/webapps'
+    }
+   }
+  }
+ }
+}
