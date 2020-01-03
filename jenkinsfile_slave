@@ -1,5 +1,5 @@
 pipeline {
- agent { label 'dev' }
+ agent { node { label 'dev' } }
  stages {
   stage('SCM Checkout') {
    git 'https://github.com/ranjeetgarodia/pipeline'
