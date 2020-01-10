@@ -33,7 +33,7 @@ pipeline {
    steps {
     //sshagent(['tomcat-pipeline']) {
     sshagent(credentials: ['tomcat_dev']) {
-      sh 'scp -o StrictHostKeyChecking=no */target/*.war root@10.0.2.144:/var/lib/tomcat/webapps'
+      sh 'scp -o StrictHostKeyChecking=no */target/*.war root@10.0.1.58:/var/lib/tomcat/webapps'
     }
    }
   }
